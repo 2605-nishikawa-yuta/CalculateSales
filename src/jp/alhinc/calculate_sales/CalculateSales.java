@@ -38,7 +38,37 @@ public class CalculateSales {
 
 		// ※ここから集計処理を作成してください。(処理内容2-1、2-2)
 
+		//指定されたフォルダ（args[0]）内のファイル一覧を取得する
+		File[] files = new File(args[0]).listFiles();
 
+		//取得したファイルを1つずつ取り出してループ処理する
+		for (File f : files) {
+		    //「ファイル名が数字8桁.rcdであること」をチェック
+		    if (f.getName().matches("^[0-9]{8}\\.rcd$")) {
+
+		        try {
+		            //ファイルを読み込むための準備
+		            FileReader fr = new FileReader(f);
+		            BufferedReader br = new BufferedReader(fr);
+
+		            //1行目から「支店コード」を、2行目から「売上額」を読み取る
+		            String storeCode = br.readLine();
+		            String salesAmount = br.readLine();
+
+		            //文字列だった売上額を、計算ができる数値（long型）に変換する
+		            long Amount = Long.parseLong(salesAmount);
+
+		            //Mapから「今の合計金額」を取り出し、今回の売上を足して、Mapに保存し直す
+		            branchSales.put(storeCode, branchSales.get(storeCode) + Amount);
+
+	            br.close();
+
+			}
+			catch(IOException e){
+				System.out.println(UNKNOWN_ERROR);
+			}
+		}
+	}
 
 		// 支店別集計ファイル書き込み処理
 		if(!writeFile(args[0], FILE_NAME_BRANCH_OUT, branchNames, branchSales)) {
@@ -68,12 +98,17 @@ public class CalculateSales {
 			// 一行ずつ読み込む
 			while((line = br.readLine()) != null) {
 				// ※ここの読み込み処理を変更してください。(処理内容1-2)
+
+				// 文字列を「,」で分割後、配列に格納
 				String[] items = line.split(",");
-				
+
+                //支店コード、支店名をそれぞれMapに格納する
 				branchNames.put(items[0], items[1]);
+
+				//支店コード、売上額をそれぞれMapに格納する
 				branchSales.put(items[0], 0L);
-				
-				
+
+
 				System.out.println(line);
 			}
 
@@ -109,5 +144,4 @@ public class CalculateSales {
 
 		return true;
 	}
-
 }
