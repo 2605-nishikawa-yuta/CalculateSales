@@ -59,9 +59,9 @@ public class CalculateSales {
         // リストに格納された売上ファイルの数だけ集計を繰り返す
         for (int i = 0; i < rcdFiles.size(); i++) {
             try {
-            	File f = rcdFiles.get(i);
+            	File rcdfile = rcdFiles.get(i);
                 // ファイルを読み込む準備）
-                br = new BufferedReader(new FileReader(f));
+                br = new BufferedReader(new FileReader(rcdfile));
 
                 // ファイルの中身を溜めるためのリストを作成
                 List<String> fileContents = new ArrayList<>();
@@ -138,7 +138,7 @@ public class CalculateSales {
 
                 // 【エラー処理】
                 // 要素（コードと名前）が2つない、または支店コードが3桁ではない場合は、中断
-                if (items.length != 2 || items[0].length() != 3) {
+                if ((items.length != 2) || (!items[0].matches("^[0-9]{3}$"))) {
                     System.out.println(FILE_INVALID_FORMAT);
                     return false;
                 }
