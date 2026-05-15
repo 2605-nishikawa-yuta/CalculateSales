@@ -109,8 +109,7 @@ public class CalculateSales {
                 }
 
                 if (fileContents.size() != 2) {
-                	//⽀店情報を保持しているMapに売上ファイルの⽀店コードが存在しなかった場合は、
-                    //エラーメッセージをコンソールに表⽰します。
+                    //売上ファイルの行数が正しくない場合は、エラーメッセージをコンソールに表⽰します。
                 	System.out.println(rcdFile.getName() + INVALID_FILE_FORMAT);
                 	return;
                 }
